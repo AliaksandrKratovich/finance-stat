@@ -1,12 +1,31 @@
 import {useDropzone} from "react-dropzone";
 import {Box, createTheme, ThemeProvider} from "@mui/material";
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import {useCallback} from "react";
+import {useContext, useEffect, useState} from "react";
+import {useDecompress} from "../Shared/unzip/useDecompress.js";
+import {DbContext} from "../Entities/model/DbContext.jsx";
 
 const FileUploader = () => {
-    const onDrop = useCallback((files) => {
-        console.log(files);
-    })
+    const [file, setFile] = useState(null);
+    const {data, loading} = useDecompress(file);
+    const {
+        tables,
+        setFile: setDbFile
+    } = useContext(DbContext);
+
+    useEffect(() => {
+        if(!data){
+            return;
+        }
+        setDbFile(data)
+    }, [data]);
+
+    useEffect(() =>{
+        console.log(tables)
+    }, [tables])
+    const onDrop = (files) => {
+        setFile(files[0])
+    };
     const {getRootProps, getInputProps} = useDropzone({onDrop});
 
     const theme = createTheme({
