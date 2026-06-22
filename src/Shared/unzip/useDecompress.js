@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 export const useDecompress = (file) => {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!file) {

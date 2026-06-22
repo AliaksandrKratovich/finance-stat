@@ -3,6 +3,7 @@ import initSqlJs from 'sql.js';
 
 export const useSqliteDb = (file) => {
     const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
     const [db, setDb] = useState(null);
     const [tables, setTables] = useState([]);
 
@@ -12,7 +13,6 @@ export const useSqliteDb = (file) => {
             return;
         }
 
-        console.log('init file', file);
         const runSb = async () => {
             setLoading(true);
             const database = await openDatabase(file);
@@ -20,6 +20,7 @@ export const useSqliteDb = (file) => {
             setDb(database);
             setTables(tableNames);
             setLoading(false);
+            setLoaded(true);
         }
 
         runSb();
@@ -29,7 +30,7 @@ export const useSqliteDb = (file) => {
         };
     }, [file]);
 
-    return {db, tables, loading};
+    return {db, tables, loading, loaded};
 }
 
 export const openDatabase = async (file) => {

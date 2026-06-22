@@ -1,28 +1,33 @@
 import {useDropzone} from "react-dropzone";
-import {Box, createTheme, ThemeProvider} from "@mui/material";
+import {Box, CircularProgress, createTheme, ThemeProvider} from "@mui/material";
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import {useContext, useEffect, useState} from "react";
 import {useDecompress} from "../Shared/unzip/useDecompress.js";
 import {DbContext} from "../Entities/model/DbContext.jsx";
+import {indigo} from '@mui/material/colors';
 
-const FileUploader = () => {
+const FileUploader = (props) => {
+    const {fileUploaded} = props;
     const [file, setFile] = useState(null);
-    const {data, loading} = useDecompress(file);
+    const {data, loading: decompressLoading} = useDecompress(file);
     const {
-        tables,
-        setFile: setDbFile
+        initDb: setDbFile,
+        loading: dbLoading,
+        loaded: dbLoaded,
     } = useContext(DbContext);
 
     useEffect(() => {
-        if(!data){
+        if (!data) {
             return;
         }
         setDbFile(data)
     }, [data]);
 
-    useEffect(() =>{
-        console.log(tables)
-    }, [tables])
+    useEffect(() => {
+        if(dbLoaded) {
+            fileUploaded();
+        }
+    }, [dbLoaded])
     const onDrop = (files) => {
         setFile(files[0])
     };
@@ -31,10 +36,36 @@ const FileUploader = () => {
     const theme = createTheme({
         palette: {
             background: {
-                paper: '#fff'
+                paper: '#fff',
+                hover: indigo[50]
             }
         }
     });
+
+    const isDataPreparing = () => {
+        return decompressLoading || dbLoading;
+    }
+
+    if (isDataPreparing()) {
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -70%)',
+                    position: 'absolute',
+                }}>
+                <CircularProgress
+                    enableTrackSlot
+                    size="60px"
+                    aria-label="Loading…"/>
+            </Box>
+
+        )
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -53,9 +84,11 @@ const FileUploader = () => {
                     justifyContent: 'center',
                     top: '50%',
                     left: '50%',
+                    boxShadow: 3,
                     transform: 'translate(-50%, -70%)',
                     '&:hover': {
                         cursor: 'pointer',
+                        backgroundColor: 'background.hover',
                     }
                 }}
                 {...getRootProps()}

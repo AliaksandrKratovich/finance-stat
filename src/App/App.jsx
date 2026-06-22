@@ -1,13 +1,23 @@
-import {useState} from 'react'
-import FileUploader from "../Widgets/FileUploader.jsx";
 import {DbContextProvider} from "../Entities/model/DbContext.jsx";
+import {FinanceViewer} from "../Widgets/FinanceViewer.jsx";
+import {useState} from "react";
+import FileUploader from "../Widgets/FileUploader.jsx";
 
 function App() {
-    const [count, setCount] = useState(0)
+    const [fileLoaded, setFileLoaded] = useState(false);
+
+    const fileUploaded = () => {
+        setFileLoaded(true)
+    }
 
     return (
         <DbContextProvider>
-            <FileUploader></FileUploader>
+            {
+                fileLoaded ?
+                    <FinanceViewer></FinanceViewer>:
+                    <FileUploader fileUploaded={() => setFileLoaded(true)}></FileUploader>
+
+            }
         </DbContextProvider>
     )
 }

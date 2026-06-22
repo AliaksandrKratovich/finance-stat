@@ -1,0 +1,33 @@
+import {useCategories} from "../Entities/model/useCategories.js";
+import {Box} from "@mui/material";
+import {Category} from "@mui/icons-material";
+import {CategoryItem} from "../Shared/ui/CategoryItem.jsx";
+import {useEffect} from "react";
+
+export const CategoriesMenu = () => {
+    const {categories, getAllCategories, getCategoryById} = useCategories()
+    useEffect(() => {
+        getAllCategories();
+        console.log(categories)
+    }, []);
+
+
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                position: 'absolute',
+                width: '200px%',
+                flexDirection: 'column',
+                justifyContent: 'center',
+
+            }}
+        >
+            {categories.map((category) => (
+                <CategoryItem
+                    category={category}
+                ></CategoryItem>
+            ))}
+        </Box>
+    )
+}
