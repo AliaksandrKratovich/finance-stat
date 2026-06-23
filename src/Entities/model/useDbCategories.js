@@ -25,7 +25,7 @@ const categoriesReducer = (state, action) => {
     }
 }
 
-export const useCategories = () => {
+export const useDbCategories = () => {
     const {db} = useContext(DbContext);
     const [categories, dispatch] = useReducer(categoriesReducer, []);
     const getAllCategories = useCallback(() => {

@@ -1,0 +1,39 @@
+import {useCallback, useContext, useReducer} from "react";
+import {DbContext} from "./DbContext.jsx";
+import {transactionsMapper} from "../Models/transactionsMapper.js";
+
+const transactionsReducer = (state, action) => {
+    const {db} = action;
+    switch (action.type) {
+        case "GET_BY_CATEGORY": {
+            const {id} = action;
+            const result = db.exec(
+                `SELECT t.* FROM 'transaction' t
+                          JOIN sync_link sl_cat
+                               ON sl_cat.entityType = 'Transaction'
+                                   AND sl_cat.entityUid = t.uid
+                                   AND sl_cat.otherType = 'Category'
+                                   AND sl_cat.otherUid = '${id}'
+                 WHERE t.type = 'Expense'
+                   AND t.isRemoved = 0
+                   AND sl_cat.isRemoved = 0;
+                `
+        );
+            if (!result.length) return [];
+
+            return transactionsMapper.mapFromDb(result[0]);
+        }
+    }
+}
+
+export const useDbTransactions = () => {
+    const {db} = useContext(DbContext);
+    const [transactions, dispatch] = useReducer(transactionsReducer, []);
+
+    const getByCategory = useCallback((id) => {
+        dispatch({type: 'GET_BY_CATEGORY', id, db});
+    }, [db])
+
+
+    return {transactions, getByCategory};
+}

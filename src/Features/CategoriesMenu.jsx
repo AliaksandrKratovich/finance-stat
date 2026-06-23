@@ -1,10 +1,10 @@
-import {useCategories} from "../Entities/model/useCategories.js";
+import {useDbCategories} from "../Entities/model/useDbCategories.js";
 import {Box} from "@mui/material";
 import {CategoryItem} from "../Shared/ui/CategoryItem.jsx";
 import {useEffect} from "react";
 
 export const CategoriesMenu = () => {
-    const {categories, getAllCategories, getCategoryById} = useCategories()
+    const {categories, getAllCategories, getCategoryById} = useDbCategories()
     useEffect(() => {
         getAllCategories();
     }, []);
@@ -13,8 +13,7 @@ export const CategoriesMenu = () => {
         <Box
             sx={{
                 display: 'flex',
-                position: 'absolute',
-                width: '200px%',
+                width: '200px',
                 flexDirection: 'column',
                 justifyContent: 'center',
 
