@@ -7,7 +7,7 @@ const categoriesReducer = (state, action) => {
     switch (action.type) {
         case "GET_ALL": {
             const result = db.exec(
-                "SELECT * FROM category WHERE isRemoved = 0 ORDER BY position"
+                "SELECT * FROM category WHERE isRemoved = 0 AND type = 'Expense' ORDER BY position"
             );
             if (!result.length) return [];
             return categoriesMapper.mapFromDb(result[0]);

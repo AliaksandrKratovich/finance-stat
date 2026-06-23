@@ -25,6 +25,7 @@ export const CategoriesMenu = () => {
         >
             {categories.map((category) => (
                 <CategoryItem
+                    key={category.uid}
                     category={category}
                 ></CategoryItem>
             ))}
