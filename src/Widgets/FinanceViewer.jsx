@@ -3,6 +3,7 @@ import {useContext, useEffect} from "react";
 import {DbContext} from "../Entities/model/DbContext.jsx";
 import {useCategories} from "../Entities/model/useCategories.js";
 import {CategoriesMenu} from "../Features/CategoriesMenu.jsx";
+import {ActiveCategoriesContextProvider} from "../Entities/model/ActiveCategoriesContext.jsx";
 
 export const FinanceViewer = () => {
     const {categories, getAllCategories} = useCategories();
@@ -12,7 +13,10 @@ export const FinanceViewer = () => {
 
     return (
         <>
-          <CategoriesMenu></CategoriesMenu>
+            <ActiveCategoriesContextProvider>
+                <CategoriesMenu></CategoriesMenu>
+            </ActiveCategoriesContextProvider>
+
         </>
 
     );
