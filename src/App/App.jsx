@@ -3,6 +3,7 @@ import {FinanceViewer} from "../Widgets/FinanceViewer.jsx";
 import {useState} from "react";
 import FileUploader from "../Widgets/FileUploader.jsx";
 import {CategoryItem} from "../Shared/ui/CategoryItem.jsx";
+import EChartsReact from "react-echarts-library";
 
 function App() {
     const [fileLoaded, setFileLoaded] = useState(false);
@@ -12,6 +13,7 @@ function App() {
     }
 
     return (
+
         <DbContextProvider>
             {
                 fileLoaded ?

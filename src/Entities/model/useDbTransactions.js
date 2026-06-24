@@ -19,21 +19,32 @@ const transactionsReducer = (state, action) => {
                    AND sl_cat.isRemoved = 0;
                 `
         );
-            if (!result.length) return [];
+            const fetched = result.length ? transactionsMapper.mapFromDb(result[0]) : [];
 
-            return transactionsMapper.mapFromDb(result[0]);
+            return {
+                ...state,
+                [id]: fetched
+            };
+        }
+        case "RESET": {
+            return {
+            };
         }
     }
 }
 
 export const useDbTransactions = () => {
     const {db} = useContext(DbContext);
-    const [transactions, dispatch] = useReducer(transactionsReducer, []);
+    const [transactionsByCategory, dispatch] = useReducer(transactionsReducer, {});
 
     const getByCategory = useCallback((id) => {
         dispatch({type: 'GET_BY_CATEGORY', id, db});
     }, [db])
 
+    const reset = useCallback(() => {
+        dispatch({type: 'RESET', db});
+    }, [db])
 
-    return {transactions, getByCategory};
+
+    return {transactionsByCategory, getByCategory, reset};
 }

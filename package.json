@@ -21,9 +21,12 @@
     "@mui/material": "^9.1.1",
     "@mui/system": "^9.1.1",
     "@zip.js/zip.js": "^2.8.26",
+    "date-fns": "^4.4.0",
+    "echarts": "^6.1.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-dropzone": "^15.0.0",
+    "react-echarts-library": "^1.4.0",
     "sql.js": "^1.14.1"
   },
   "devDependencies": {

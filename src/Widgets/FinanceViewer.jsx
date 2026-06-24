@@ -4,7 +4,7 @@ import {DbContext} from "../Entities/model/DbContext.jsx";
 import {useDbCategories} from "../Entities/model/useDbCategories.js";
 import {CategoriesMenu} from "../Features/CategoriesMenu.jsx";
 import {ActiveCategoriesContextProvider} from "../Entities/model/ActiveCategoriesContext.jsx";
-import {CategoriesChart} from "../Features/CategoriesChart.jsx";
+import CategoriesChart from "../Features/CategoriesChart.jsx";
 import {Box} from "@mui/material";
 
 export const FinanceViewer = () => {

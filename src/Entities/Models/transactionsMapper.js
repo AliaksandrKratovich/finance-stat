@@ -14,6 +14,6 @@ export class transactionsMapper {
     }
 
     static #amountToNumber(amount) {
-        return (amount / 100).toFixed(2);
+        return Number((amount / 100).toFixed(2));
     }
 }
