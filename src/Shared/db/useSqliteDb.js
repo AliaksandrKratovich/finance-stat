@@ -35,7 +35,7 @@ export const useSqliteDb = (file) => {
 
 export const openDatabase = async (file) => {
     const SQL = await initSqlJs({
-        locateFile: (file) => '/sql-wasm.wasm',
+        locateFile: (file) => `${import.meta.env.BASE_URL}${file}`,
     });
 
     const buffer = await file.arrayBuffer();
