@@ -2,7 +2,7 @@ import {Avatar, Box, createTheme, ThemeProvider} from "@mui/material";
 import {indigo, pink} from '@mui/material/colors';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {useContext} from "react";
-import {ActiveCategoriesContext} from "../../Entities/model/ActiveCategoriesContext.jsx";
+import {ActiveCategoriesContext} from "../../Features/categories/model/ActiveCategoriesContext.jsx";
 
 export const CategoryItem = (props) => {
     const {category} = props;

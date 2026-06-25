@@ -1,6 +1,6 @@
 import {useCallback, useContext, useReducer} from "react";
-import {DbContext} from "./DbContext.jsx";
-import {categoriesMapper} from "../Models/categoriesMapper.js";
+import {DbContext} from "../../../App/global/DbContext.jsx";
+import {categoriesMapper} from "./categoriesMapper.js";
 
 const categoriesReducer = (state, action) => {
     const {db} = action;

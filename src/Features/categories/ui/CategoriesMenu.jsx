@@ -1,6 +1,6 @@
-import {useDbCategories} from "../Entities/model/useDbCategories.js";
+import {useDbCategories} from "../../../Entities/category/model/useDbCategories.js";
 import {Box} from "@mui/material";
-import {CategoryItem} from "../Shared/ui/CategoryItem.jsx";
+import {CategoryItem} from "../../../Shared/ui/CategoryItem.jsx";
 import {useEffect} from "react";
 
 export const CategoriesMenu = () => {

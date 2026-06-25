@@ -1,4 +1,4 @@
-import {iconsMapper} from "./iconsMapper.js";
+import {iconsMapper} from "../../lib/iconsMapper.js";
 
 export class categoriesMapper {
     static mapFromDb(data) {

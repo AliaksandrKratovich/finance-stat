@@ -1,6 +1,6 @@
 import {useCallback, useContext, useReducer} from "react";
-import {DbContext} from "./DbContext.jsx";
-import {transactionsMapper} from "../Models/transactionsMapper.js";
+import {DbContext} from "../../../App/global/DbContext.jsx";
+import {transactionsMapper} from "./transactionsMapper.js";
 
 const transactionsReducer = (state, action) => {
     const {db} = action;

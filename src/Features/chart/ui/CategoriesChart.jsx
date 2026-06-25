@@ -1,12 +1,13 @@
 import {useContext, useEffect, useMemo, useState} from "react";
-import {ActiveCategoriesContext} from "../Entities/model/ActiveCategoriesContext.jsx";
+import {ActiveCategoriesContext} from "../../categories/model/ActiveCategoriesContext.jsx";
 import {Box} from "@mui/material";
-import {useDbTransactions} from "../Entities/model/useDbTransactions.js";
+import {useDbTransactions} from "../../../Entities/transactions/model/useDbTransactions.js";
 import EChartsReact from "react-echarts-library";
-import {ChartLine} from "../Entities/ChartLine.js";
-import { eachDayOfInterval, min, max, format  } from 'date-fns';
+import {ChartLine} from "../../../Entities/chart/ChartLine.js";
+import {eachDayOfInterval, min, max, format} from 'date-fns';
 
-const CategoriesChart = () => {
+const CategoriesChart = (props) => {
+    const {setActiveCategoriesSelectionSum} = props;
     const {activeCategories} = useContext(ActiveCategoriesContext);
     const [chartLines, setChartLines] = useState([]);
 
@@ -28,6 +29,32 @@ const CategoriesChart = () => {
         setChartLines(newChartLines);
     }, [transactionsByCategory]);
 
+    const calculateChartLinesSum = (start, end) => {
+        let result = 0;
+
+        chartLines.map(chartLine => {
+            const aggregatedMap = getAggregateMap(chartLine)
+            result += applySelectionPercentage(aggregatedMap, start, end).values().reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        })
+
+        return result;
+    }
+    const getAggregateMap = (chartLine) => {
+        const aggregateMap = new Map();
+        chartLine.transactions.forEach(({date, amountInDefaultCurrency}) => {
+            aggregateMap.set(date, (aggregateMap.get(date) ?? 0) + amountInDefaultCurrency);
+        });
+
+        return aggregateMap;
+    }
+
+    const applySelectionPercentage = (map, start, end) => {
+        const entries = [...map.entries()];
+        const startIndex = Math.floor((start / 100) * entries.length);
+        const endIndex = Math.ceil((end / 100) * entries.length);
+        return new Map(entries.slice(startIndex, endIndex));
+    }
+
     const option = useMemo(() => {
 
         const minDate = min(chartLines.map(chartLine => chartLine.minTransactionDate()));
@@ -37,12 +64,12 @@ const CategoriesChart = () => {
             end: maxDate
         }).map(date => format(date, 'yyyy-MM-dd'));
 
+        const result = calculateChartLinesSum(0, 100);
+        setActiveCategoriesSelectionSum(result)
+
         const series = chartLines.map((chartLine) => {
 
-            const aggregateMap = new Map();
-            chartLine.transactions.forEach(({ date, amountInDefaultCurrency }) => {
-                aggregateMap.set(date, (aggregateMap.get(date) ?? 0) + amountInDefaultCurrency);
-            });
+            const aggregateMap = getAggregateMap(chartLine)
 
             return {
                 name: chartLine.categoryTitle,
@@ -60,6 +87,7 @@ const CategoriesChart = () => {
             },
             legend: {
                 top: 10,
+                selectedMode: false
             },
             grid: {
                 left: '5%',
@@ -70,7 +98,6 @@ const CategoriesChart = () => {
             xAxis: {
                 type: 'category',
                 data: datesRange,
-                boundaryGap: false,
             },
             yAxis: {
                 type: 'value',
@@ -91,17 +118,32 @@ const CategoriesChart = () => {
         };
     }, [chartLines]);
 
+
+    const onEvents = {
+        datazoom: (params) => {
+            const result = calculateChartLinesSum(params.start, params.end);
+            setActiveCategoriesSelectionSum(result)
+        }
+    }
+
+
     return (
         <>
-        <Box
-        sx={{
-            width: "100%",
-            height: "400px",
-            border: "1px solid gray",
-        }}
-        >
-            {chartLines.length > 0 && <EChartsReact option={option} style={{ height: 400, width: '100%' }} />}
-        </Box>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: "400px",
+                    border: "1px solid gray",
+                }}
+            >
+                {chartLines.length > 0 &&
+                    <EChartsReact
+                        option={option}
+                        style={{height: 400, width: '100%'}}
+                        notMerge={true}
+                        onEvents={onEvents}
+                    />}
+            </Box>
 
         </>
     );

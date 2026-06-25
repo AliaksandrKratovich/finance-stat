@@ -2,8 +2,8 @@ import {useDropzone} from "react-dropzone";
 import {Box, CircularProgress, createTheme, ThemeProvider} from "@mui/material";
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import {useContext, useEffect, useState} from "react";
-import {useDecompress} from "../Shared/unzip/useDecompress.js";
-import {DbContext} from "../Entities/model/DbContext.jsx";
+import {useDecompress} from "../../Shared/unzip/useDecompress.js";
+import {DbContext} from "../../App/global/DbContext.jsx";
 import {indigo} from '@mui/material/colors';
 
 const FileUploader = (props) => {

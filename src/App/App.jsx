@@ -1,7 +1,7 @@
-import {DbContextProvider} from "../Entities/model/DbContext.jsx";
-import {FinanceViewer} from "../Widgets/FinanceViewer.jsx";
+import {DbContextProvider} from "./global/DbContext.jsx";
+import {FinanceViewer} from "../Widgets/finance-viewer/FinanceViewer.jsx";
 import {useState} from "react";
-import FileUploader from "../Widgets/FileUploader.jsx";
+import FileUploader from "../Widgets/file-uploader/FileUploader.jsx";
 import {CategoryItem} from "../Shared/ui/CategoryItem.jsx";
 import EChartsReact from "react-echarts-library";
 
