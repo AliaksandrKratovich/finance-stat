@@ -35,7 +35,7 @@ export const FinanceViewer = () => {
                     >
                         <CategoriesChart
                             setActiveCategoriesSelectionSum={setActiveCategoriesSelectionSum}></CategoriesChart>
-                        <CategoryItem value={activeCategoriesSelectionSum}></CategoryItem>
+                        <CategoryItem title="Sum by selected cateogries" value={activeCategoriesSelectionSum}></CategoryItem>
                     </Box>
                 </Box>
 
